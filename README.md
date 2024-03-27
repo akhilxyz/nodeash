@@ -18,3 +18,33 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 Replace `"your-username/nodeash"` in the GitHub repository link with the actual repository link where your Nodeash package is hosted.
+
+# Usage
+```
+import {NodeashRoutes, ServerClient} from 'nodeash';
+
+
+const register = (req, res) => {
+        res.send('Register API called yo yo ');
+}
+// Example usage:
+const userControllers = [
+    {
+        method: 'get',
+        endpoint: '/register',
+        handler:register
+    },
+    // Add more controllers as needed
+];
+
+const userRoutes = new NodeashRoutes();
+userRoutes.initializeRoutes('/user', userControllers);
+
+
+// Define a route for the controller API path
+
+const controllers  = [userRoutes]
+
+const server = new ServerClient({port : 3007 , baseUrl : "/test", controllers});
+server.startServer();
+```
