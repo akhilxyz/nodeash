@@ -18,9 +18,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 Replace `"your-username/nodeash"` in the GitHub repository link with the actual repository link where your Nodeash package is hosted.
-
-# Usage
 ```
+# Usage
+```bash
 import {NodeashRoutes, ServerClient} from 'nodeash';
 
 
