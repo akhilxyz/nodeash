@@ -23,16 +23,33 @@ Replace `"your-username/nodeash"` in the GitHub repository link with the actual 
 ```bash
 import {NodeashRoutes, ServerClient} from 'nodeash';
 
-
 const register = (req, res) => {
-        res.send('Register API called yo yo ');
+    try {
+        res.send('Register API called');
+    } catch (error) {
+        
+    }
 }
+
+const login = (req, res) => {
+    try {
+        res.send('login API called');
+    } catch (error) {
+        
+    }
+}
+
 // Example usage:
 const userControllers = [
     {
-        method: 'get',
+        method: 'post',
         endpoint: '/register',
         handler:register
+    },
+    {
+        method: 'post',
+        endpoint: '/login',
+        handler:login
     },
     // Add more controllers as needed
 ];
@@ -45,6 +62,10 @@ userRoutes.initializeRoutes('/user', userControllers);
 
 const controllers  = [userRoutes]
 
-const server = new ServerClient({port : 3007 , baseUrl : "/test", controllers});
+
+
+const server = new ServerClient({port : 3007 , baseUrl : "/api", controllers});
 server.startServer();
+
+
 ```
