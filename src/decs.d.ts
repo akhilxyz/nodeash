@@ -1,1 +1,1 @@
-declare module "nodeash";
+declare module "nodeash-sql";
