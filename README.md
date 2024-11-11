@@ -35,14 +35,11 @@ const userControllers = [
         method: 'post',
         endpoint: '/register',
         handler:register
-        middleware: [middleware_1 , middleware_2]
     },
     {
         method: 'post',
         endpoint: '/login',
         handler:login
-        middleware: [middleware_1 , middleware_2]
-
     },
     // Add more controllers as needed
 ];
