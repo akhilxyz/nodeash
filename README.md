@@ -8,13 +8,57 @@ You can install Nodeash via npm:
 
 ```bash
 npm install nodeash
+```
+# Usage
+```bash
+import {NodeashRoutes, ServerClient} from 'nodeash';
+
+const register = (req, res) => {
+    try {
+        res.send('Register API called');
+    } catch (error) {
+        
+    }
+}
+
+const login = (req, res) => {
+    try {
+        res.send('login API called');
+    } catch (error) {
+        
+    }
+}
+
+// Example usage:
+const userControllers = [
+    {
+        method: 'post',
+        endpoint: '/register',
+        handler:register
+        middleware: [middleware_1 , middleware_2]
+    },
+    {
+        method: 'post',
+        endpoint: '/login',
+        handler:login
+        middleware: [middleware_1 , middleware_2]
+
+    },
+    // Add more controllers as needed
+];
+
+const userRoutes = new NodeashRoutes();
+userRoutes.initializeRoutes('/user', userControllers);
 
 
-Contributing
-Contributions are welcome! If you find any issues or would like to contribute to Nodeash, please feel free to open an issue or submit a pull request on the GitHub repository.
+// Define a route for the controller API path
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+const controllers  = [userRoutes]
 
 
-Replace `"your-username/nodeash"` in the GitHub repository link with the actual repository link where your Nodeash package is hosted.
+
+const server = new ServerClient({port : 3007 , baseUrl : "/api", controllers});
+server.startServer();
+
+
+```

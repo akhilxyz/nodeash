@@ -4,6 +4,7 @@ interface Controller {
     method: string;
     endpoint: string;
     handler: (req: Request, res: Response, next: NextFunction) => void;
+    middleware?: ((req: Request, res: Response, next: NextFunction) => void)[];
 }
 
 class NodeashRoutes {
@@ -13,31 +14,33 @@ class NodeashRoutes {
         this.router = Router();
     }
 
-    initializeRoutes(path: string, controllers: Controller[], ...middleware: ((req: Request, res: Response, next: NextFunction) => void)[]) {
-        if (middleware.length > 0) {
-            middleware.forEach(mw => {
-                this.router.use(path, mw);
-            });
-        }
-
+    initializeRoutes(parentRoute: string, controllers: Controller[]) {
         controllers.forEach(controller => {
-            const { method, endpoint, handler } = controller;
+            const { method, endpoint, handler, middleware } = controller;
+            
+            // Apply middleware for this controller if provided
+            if (middleware && middleware.length > 0) {
+                middleware.forEach(mw => {
+                    this.router.use(`${parentRoute}${endpoint}`, mw);
+                });
+            }
+
             if (method && endpoint && handler) {
                 switch (method.toLowerCase()) {
                     case 'get':
-                        this.router.get(`${path}${endpoint}`, handler);
+                        this.router.get(`${parentRoute}${endpoint}`, handler);
                         break;
                     case 'post':
-                        this.router.post(`${path}${endpoint}`, handler);
+                        this.router.post(`${parentRoute}${endpoint}`, handler);
                         break;
                     case 'put':
-                        this.router.put(`${path}${endpoint}`, handler);
+                        this.router.put(`${parentRoute}${endpoint}`, handler);
                         break;
                     case 'delete':
-                        this.router.delete(`${path}${endpoint}`, handler);
+                        this.router.delete(`${parentRoute}${endpoint}`, handler);
                         break;
                     case 'all':
-                        this.router.all(`${path}${endpoint}`, handler);
+                        this.router.all(`${parentRoute}${endpoint}`, handler);
                         break;
                     default:
                         console.error(`Unsupported HTTP method: ${method}`);
@@ -49,31 +52,4 @@ class NodeashRoutes {
     }
 }
 
-export default NodeashRoutes
-
-// // Example usage:
-// const userControllers: Controller[] = [
-//     {
-//         method: 'get',
-//         endpoint: '/register',
-//         handler: (req, res) => {
-//             res.send('Register API called');
-//         }
-//     },
-//     // Add more controllers as needed
-// ];
-
-// const userMiddleware1: ((req: Request, res: Response, next: NextFunction) => void) = (req, res, next) => {
-//     // Your middleware logic here
-//     next();
-// };
-
-// const userMiddleware2: ((req: Request, res: Response, next: NextFunction) => void) = (req, res, next) => {
-//     // Your other middleware logic here
-//     next();
-// };
-
-// const userRoutes = new DynamicRoutes();
-// userRoutes.initializeRoutes('/user', userControllers, userMiddleware1, userMiddleware2);
-
-// export default userRoutes.router;
+export default NodeashRoutes;

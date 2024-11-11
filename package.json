@@ -1,66 +1,41 @@
 {
   "name": "nodeash",
-  "version": "1.2.429",
-  "description": "nodeash is node js server package",
-  "author": "",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "umd:main": "dist/umd/index.js",
-  "types": "dist/types/index.d.js",
+  "version": "3.0.11",
+  "description": "nodeash-sql is node js sql server package",
+  "author": "akhil",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "publishme": "npm run build:upgrade && npm publish --access public .",
-    "test": "npm run build:cjs && mocha ./dist/cjs/test/**/*.js --timeout -1",
-    "build:upgrade": "npm --no-git-tag-version version patch",
-    "build": "npm run build:cjs && npm run build:esm &&  npm run build:types",
-    "build:cjs": "rm -rf ./dist/cjs && tsc -p config/tsconfig.cjs.json",
-    "build:esm": "rm -rf ./dist/esm && tsc -p config/tsconfig.esm.json",
-    "build:umd": "rm -rf ./dist/umd && webpack --config config/webpack.config.js",
-    "build:types": "rm -rf ./dist/types && tsc -p config/tsconfig.types.json",
-    "start": "node ./dist/cjs/index.js"
+    "write-version": "node -e \"const fs = require('fs'); const packageJson = require('./package.json'); const version = packageJson.version; const data = { version }; const jsonData = JSON.stringify(data, null, 2); fs.writeFile('./src/version.json', jsonData, (err) => { if (err) { console.error('Error writing version file:', err); } else { console.log('Version file has been saved.'); } });\"",
+    "publish_app": " npm run write-version &&  npm run build:upgrade && npm publish --access public .",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "build:upgrade": "npm --no-git-tag-version version patch"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
-    "dist"
+    "lib/**/*"
   ],
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/akhilxyz/nodeash/"
   },
   "license": "ISC",
-  "dependencies": {
-    "axios": "^1.4.0",
-    "chai": "^4.3.10",
-    "cors": "^2.8.5",
-    "debug": "^4.3.4",
-    "fs": "^0.0.1-security",
-    "helmet": "^7.1.0",
-    "mocha": "^10.2.0",
-    "path": "^0.12.7",
-    "typescript": "^5.2.2"
-  },
   "devDependencies": {
-    "@types/chai": "^4.3.5",
-    "@types/chai-as-promised": "^7.1.5",
-    "@types/cors": "^2.8.17",
     "@types/debug": "^4.1.12",
-    "@types/express": "^4.17.17",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.4.0",
-    "@types/qrcode": "^1.5.1",
-    "@types/sinon": "^10.0.15",
-    "chai": "^4.3.7",
-    "chai-as-promised": "^7.1.1",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "mocha": "^10.2.0",
-    "ts-loader": "^9.4.4",
-    "ts-node": "^10.9.1",
+    "@types/express": "^4.17.21",
+    "@types/helmet": "^4.0.0",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "helmet": "^7.1.0",
+    "socket.io": "^4.7.5"
   }
 }

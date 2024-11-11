@@ -1,5 +1,4 @@
 'use strict';
-
 import http from 'http';
 import express, { Application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
@@ -7,6 +6,8 @@ import helmet from 'helmet';
 import cors from 'cors';
 import debug from 'debug';
 import { ControllerInterface } from './interface/controller.interface';
+// import path from 'path';
+import versionInfo from './version.json';
 
 const debugInstance = debug('node');
 
@@ -64,16 +65,36 @@ class ServerClient {
         });
     }
 
+    public startCron(cronJobs :any ) {
+        if (Array.isArray(cronJobs)) {
+            cronJobs.forEach((cronJob :any) => {
+                if (typeof cronJob === 'function') {
+                    cronJob();
+                }
+            });
+        } else {
+            console.error('Cron jobs should be an array of functions.');
+        }
+    }
+
     public startServer = () => {
         this.app_Server.on('error', this.onError);
         this.app_Server.on('listening', this.onListening);
         this.app_Server.listen(this.port);
     }
 
+
+    public getHttpServer = () => {
+        return this.app_Server
+    }
+
+
     private onListening = () => {
         const bind = `port ${this.port}`;
         debugInstance('Listening on ' + bind);
-        console.log(`ᴀᴘᴘ ɪꜱ ʟɪꜱᴛᴇɴɪɴɢ ᴏɴ ᴘᴏʀᴛ ${this.port}`);
+        // console.log(`ᴀᴘᴘ ɪꜱ ʟɪꜱᴛᴇɴɪɴɢ ᴏɴ ᴘᴏʀᴛ ${this.port}`);
+        console.log(`🌼 Nodeash ${versionInfo.version} Server pack\n\n╰╮\n\n ╰─ ✔︎ [ 2 ] Nodeash are enabled. \n\n  ❤︎ ᴀᴘᴘ ɪꜱ ʟɪꜱᴛᴇɴɪɴɢ ᴏɴ ᴘᴏʀᴛ ${this.port}\n\n `);
+
     }
 
 
